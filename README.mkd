@@ -35,18 +35,18 @@ Being confused by all these tails? In `Slim-Light` you can just separate routing
 
 ```php
 // Routing
-$app->route('/int:id', 'get_book_by_id', 'GET');  // Setup all small tails in one place!
-$app->route('/int:id', 'edit_book_by_id', 'POST');
-$app->route('/int:id', 'remove_book_by_id', 'DELETE');
+$app->route('get_book_by_id', '/int:id', 'GET');  // Setup all small tails in one place!
+$app->route('edit_book_by_id', '/int:id', 'POST');
+$app->route('remove_book_by_id', '/int:id', 'DELETE');
 
 // Registering
-$app->map('get_book_by_id', function ($id) use ($app) {
+$app->set('get_book_by_id', function ($id) use ($app) {
   // do somethings...
 });
-$app->map('edit_book_by_id', function ($id) use ($app) {
+$app->set('edit_book_by_id', function ($id) use ($app) {
   // do somethings...
 });
-$app->map('remove_book_by_id', function ($id) use ($app) {
+$app->set('remove_book_by_id', function ($id) use ($app) {
   // do somethings...
 });
 ```
