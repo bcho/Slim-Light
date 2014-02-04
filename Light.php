@@ -74,7 +74,7 @@ class Light extends \Slim\Slim
     protected function mapNamedRoute($name)
     {
         $route = $this->namedRoutes[$name];
-        if (is_null($route) || empty(array_filter($route))) {
+        if (is_null($route) || count(array_filter($route)) === 0) {
             throw new RuntimeException("Route $name cannot be mapped!");
         }
 
