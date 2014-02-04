@@ -1,6 +1,6 @@
 <?php
 
-require 'bootstrap.php';
+require_once 'bootstrap.php';
 
 
 class RouteMapTest extends Light_TestCase
