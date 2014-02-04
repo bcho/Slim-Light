@@ -24,6 +24,32 @@ class Light extends \Slim\Slim
     protected $namedRoutes = array();
 
     /**
+     * @var array
+     */
+    protected $defaultResourceRoutes = array(
+        'get' => array(
+            'pattern' => '/int:id',
+            'methods' => array('GET')
+        ),
+        'update' => array(
+            'pattern' => '/int:id',
+            'methods' => array('POST', 'PUT')
+        ),
+        'remove' => array(
+            'pattern' => '/int:id',
+            'methods' => array('DELETE')
+        ),
+        'get_all' => array(
+            'pattern' => '/',
+            'methods' => array('GET')
+        ),
+        'create' => array(
+            'pattern' => '/',
+            'methods' => array('POST')
+        )
+    );
+
+    /**
      * Build a named route pair.
      *
      * @return array
@@ -142,6 +168,56 @@ class Light extends \Slim\Slim
         $route['pattern'] = $pattern;
         $route['methods'] = $methods;
         $this->namedRoutes[$name] = $route;
+
+        return $this;
+    }
+
+    /**
+     * Register a resource object.
+     *
+     * Register results as follows:
+     *
+     *      Method          Route Name          Pattern         Method
+     *      get($id)        $res_name@get       $pattern/$id    GET
+     *      update($id)     $res_name@update    $pattern/$id    POST / PUT
+     *      remove($id)     $res_name@remove    $pattern/$id    DELETE
+     *      get_all()       $res_name@get_all   $pattern        GET
+     *      create()        $res_name@create    $pattern        POST
+     *
+     * USAGE:
+     *      
+     *      $app->resource($res_name, $pattern[, 'md1', 'md2'], new ResourceObj());
+     *
+     * TODO: Provide customize route mapping.
+     *
+     * @param array SEE ABOVE
+     * @return \Slim\Light\Light
+     */
+    public function resource()
+    {
+        // Extract resource name, pattern and resource object.
+        $args = func_get_args();
+        $name = array_shift($args);
+        $pattern = $args[0];
+        $res_obj = array_pop($args);
+
+        // Reorder the arguments to suit the `set` method.
+        $callable_pos = count($args);
+        $args[] = NULL;
+
+        foreach ($this->defaultResourceRoutes as $method => $v) {
+            $route_name = "$name@$method";
+            $this->route($route_name, $pattern . $v['pattern'], $v['methods']);
+
+            // Reorder the arguments to suit the `set` method.
+            $args[0] = $route_name;
+            // Create a function clousure which calls resource object's method.
+            $args[$callable_pos] = function () use ($res_obj, $method) {
+                $args = func_get_args();
+                return call_user_method_array($method, $res_obj, $args);
+            };
+            call_user_method_array('set', $this, $args);
+        }
 
         return $this;
     }
