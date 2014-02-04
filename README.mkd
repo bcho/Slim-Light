@@ -1,0 +1,93 @@
+# Slim-Light
+
+Enhance [Slim framework](http://www.slimframework.com/) *lightly*.
+
+
+## Features
+
+### Separate Routing
+
+If you have *a lot of* *very long* view functions to route, your code may look very messy:
+
+```php
+$app->get('/:id', function() use ($app) {
+  // do somethings...
+})
+->name('get_book_by_id')
+->conitions(array('id' => '\d+'));
+
+$app->post('/:id', function() use ($app) {
+  // do somethings...
+})
+->name('edit_book_by_id')
+->conitions(array('id' => '\d+'));
+
+$app->delete('/:id', function() use ($app) {
+  // do somethings...
+})
+->name('remove_book_by_id')
+->conitions(array('id' => '\d+'));
+
+// Other view functions go on...
+```
+
+Being confused by all these tails? In `Slim-Light` you can just separate routing and view funtions registering:
+
+```php
+// Routing
+$app->route('/int:id', 'get_book_by_id', 'GET');  // All small tails in one place!
+$app->route('/int:id', 'edit_book_by_id', 'POST');
+$app->route('/int:id', 'remove_book_by_id', 'DELETE');
+
+// Registering
+$app->map('get_book_by_id', function ($id) use ($app) {
+  // do somethings...
+});
+$app->map('edit_book_by_id', function ($id) use ($app) {
+  // do somethings...
+});
+$app->map('remove_book_by_id', function ($id) use ($app) {
+  // do somethings...
+});
+```
+
+### Class Based Resource
+
+Tried of writing restful like API? Resource object can ease you pain:
+
+```php
+class MovieResource extends \Slim\Light\ResourceController
+{
+    public function get($id) {
+        echo $id;
+    }
+
+    public function update($id) {
+        echo $id;
+    }
+
+    public function remove($id) {
+        echo $id;
+    }
+
+    public function get_all() {
+        echo 'All movies.';
+    }
+
+    public function create() {
+        echo 'Create a movie.';
+    }
+}
+
+// Everythings done here!
+$app->resource('movie', '/movie', new MovieResource());
+```
+
+## Contribution
+
+Feel free to open an issue! Waiting for your pull request <3
+
+
+## License
+
+MIT, head over [LICENSE](LICENSE) for more informations.
