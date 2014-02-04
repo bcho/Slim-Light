@@ -1,11 +1,14 @@
 {
     "name": "slim/light",
     "type": "library",
-    "description": "",
-    "keywordsd": [],
+    "description": "Enhance Slim framework lightly.",
+    "keywords": ["slimphp", "enhancemnt"],
     "homepage": "",
     "license": "MIT",
-    "authors": [],
+    "authors": [{
+        "name": "Larry Darrelc",
+        "email": "larrydarrelc@gmail.com"
+    }],
     "require": {
         "slim/slim": ">=2.4.0",
         "php": ">=5.3.0"
