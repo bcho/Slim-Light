@@ -214,9 +214,9 @@ class Light extends \Slim\Slim
             // Create a function clousure which calls resource object's method.
             $args[$callable_pos] = function () use ($res_obj, $method) {
                 $args = func_get_args();
-                return call_user_method_array($method, $res_obj, $args);
+                return call_user_func_array(array($res_obj, $method), $args);
             };
-            call_user_method_array('set', $this, $args);
+            call_user_func_array(array($this, 'set'), $args);
         }
 
         return $this;
