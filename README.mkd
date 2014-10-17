@@ -14,19 +14,19 @@ $app->get('/:id', function() use ($app) {
   // do somethings...
 })
 ->name('get_book_by_id')
-->conitions(array('id' => '\d+'));
+->conditions(array('id' => '\d+'));
 
 $app->post('/:id', function() use ($app) {
   // do somethings...
 })
 ->name('edit_book_by_id')
-->conitions(array('id' => '\d+'));
+->conditions(array('id' => '\d+'));
 
 $app->delete('/:id', function() use ($app) {
   // do somethings...
 })
 ->name('remove_book_by_id')
-->conitions(array('id' => '\d+'));
+->conditions(array('id' => '\d+'));
 
 // Other view functions go on...
 ```
@@ -79,7 +79,7 @@ class MovieResource extends \Slim\Light\ResourceController
     }
 }
 
-// Everythings done here!
+// Setup all in one line!
 $app->resource('movie', '/movie', new MovieResource());
 ```
 
